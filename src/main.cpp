@@ -19,6 +19,7 @@
 //
 #define LM35PIN A2
 #define IR_RECV_PIN DDD6
+#define EASYBUZZER_PIN DDD5
 
 float humidity = 0;
 float temperature = 0;
@@ -26,6 +27,7 @@ float light = 0;
 
 //
 float LM35_value = 0;
+const unsigned int EasyBuzzer_Frequency = 100;
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -49,7 +51,7 @@ void setup()
   //
   Serial.begin(115200);
   irrecv.enableIRIn(); // Start the receiver
-  EasyBuzzer.setPin(pin);
+  EasyBuzzer.setPin(EASYBUZZER_PIN);
 }
 
 void loop()
@@ -61,9 +63,16 @@ void loop()
   //
   ReadLM35();
 
+  //
+  EasyBuzzer.beep(
+      EasyBuzzer_Frequency // Frequency in Hertz(HZ).
+  );
+
   // printData();
   printText();
-  delay(1000);
+  delay(2000);
+
+  EasyBuzzer.stopBeep();
 }
 
 void printText()
